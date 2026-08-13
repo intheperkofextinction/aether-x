@@ -61,6 +61,7 @@ Benchmarked across **50,000 continuous limit order book mutations**:
 
 ![Aether-X Live Dashboard](https://github.com/user-attachments/assets/dc26aa4a-a8b8-41c6-8a46-4c86fa802701)
 
+---
 ##  Building & Running
 
 ### Requirements
