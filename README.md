@@ -1,6 +1,12 @@
-# Project Aether-X: Ultra-Low Latency Order Book & Execution Engine
+# ⚡ Project Aether-X: Ultra-Low Latency Order Book & Execution Engine
 
-**Aether-X** is a high-performance quantitative trading engine built from scratch. It features real-time WebSocket market data ingestion, a zero-heap-allocation memory arena, an order book mutation core written in **Modern C++20 (via pybind11)**, vectorised Order Flow Imbalance (OFI) alpha signals, and a simulated matching engine with real-time slippage & PnL accounting.
+![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=flat&logo=python&logoColor=white)
+![C++](https://img.shields.io/badge/C++-20-00599C?style=flat&logo=cplusplus&logoColor=white)
+![pybind11](https://img.shields.io/badge/pybind11-v2.12-blue?style=flat)
+![Build](https://img.shields.io/badge/GCC/g++-v11+-green?style=flat)
+![License](https://img.shields.io/badge/License-MIT-yellow.svg)
+
+**Aether-X** is a high-performance quantitative trading engine built from scratch. It features real-time WebSocket market data ingestion, a zero-heap-allocation memory arena, an order book mutation core written in **Modern C++20 (via pybind11)**, vectorized Order Flow Imbalance (OFI) alpha signals, and a simulated matching engine with real-time slippage & PnL accounting.
 
 ---
 
@@ -26,6 +32,7 @@
                                │
                                ▼
                  [ Terminal Profiling Dashboard ]
+```
 
 ---
 
@@ -39,7 +46,6 @@ Benchmarked across **50,000 continuous limit order book mutations**:
 | **Native C++20 Core (pybind11)** | **`1.8445 µs`** | **`2.06x Faster`** 🚀 |
 
 ---
-```
 
 ## 🛠️ Module Breakdown
 
