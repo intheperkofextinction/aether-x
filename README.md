@@ -59,8 +59,7 @@ Benchmarked across **50,000 continuous limit order book mutations**:
 
 ##  Production Live Terminal Dashboard
 
-![Aether-X Live Dashboard](./<img width="1242" height="548" alt="image" src="https://github.com/user-attachments/assets/dc26aa4a-a8b8-41c6-8a46-4c86fa802701" />
-)
+![Aether-X Live Dashboard](https://github.com/user-attachments/assets/dc26aa4a-a8b8-41c6-8a46-4c86fa802701)
 
 ##  Building & Running
 
