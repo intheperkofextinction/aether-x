@@ -39,6 +39,7 @@ Benchmarked across **50,000 continuous limit order book mutations**:
 | **Native C++20 Core (pybind11)** | **`1.8445 µs`** | **`2.06x Faster`** 🚀 |
 
 ---
+```
 
 ## 🛠️ Module Breakdown
 
