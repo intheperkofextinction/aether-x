@@ -10,9 +10,26 @@ from rich.live import Live
 from rich.text import Text
 
 from memory_arena import ZeroAllocationArena
-from order_book import update_limit_order_book, MAX_DEPTH
+from order_book import MAX_DEPTH
 from ws_ingestion import LiveMarketIngestion
 from execution_engine import HighFrequencyMatchingEngine
+
+# -------------------------------------------------------------------
+# Smart Execution Core Selector (C++20 pybind11 with Numba Fallback)
+# -------------------------------------------------------------------
+try:
+    import aether_cpp_core
+    ENGINE_NAME = "Native C++20 Core (pybind11)"
+    
+    def update_limit_order_book_core(bids, asks, price, qty, side, action):
+        aether_cpp_core.update_limit_order_book(bids, asks, price, qty, side, action)
+
+except ImportError:
+    from order_book import update_limit_order_book as numba_update_lob
+    ENGINE_NAME = "Numba LLVM JIT (Fallback)"
+    
+    def update_limit_order_book_core(bids, asks, price, qty, side, action):
+        numba_update_lob(bids, asks, price, qty, side, action)
 
 console = Console()
 
@@ -70,6 +87,9 @@ def build_book_table(bids, asks) -> Table:
 
 def build_account_panel(summary: dict, ofi_val: float, latencies_ns: list) -> Panel:
     text = Text()
+    text.append("--- Active Execution Engine ---\n", style="bold yellow")
+    text.append(f"• Engine: {ENGINE_NAME}\n\n", style="bold white")
+
     text.append("--- Microstructure Alpha Signal ---\n", style="bold yellow")
     text.append(f"• Real-Time Imbalance Ratio: {ofi_val:+.3f}\n\n", style="cyan")
     
@@ -82,7 +102,7 @@ def build_account_panel(summary: dict, ofi_val: float, latencies_ns: list) -> Pa
         lat_us = np.array(latencies_ns[-100:]) / 1000.0
         text.append("\n--- Hardware Latency Metrics ---\n", style="bold yellow")
         text.append(f"• Mean Mutation Latency: {np.mean(lat_us):.3f} µs\n", style="white")
-        text.append(f"• P99 Tail Latency:     {np.percentile(lat_us, 99):.3f} µs\n", style="bold red")
+        text.append(f"• P99 Tail Latency:      {np.percentile(lat_us, 99):.3f} µs\n", style="bold red")
 
     return Panel(text, title="[bold cyan]System Control & Risk Metrics[/bold cyan]")
 
@@ -98,8 +118,8 @@ def main():
     bids = np.zeros((MAX_DEPTH, 2), dtype=np.float64)
     asks = np.zeros((MAX_DEPTH, 2), dtype=np.float64)
 
-    # Numba JIT Warmup
-    update_limit_order_book(bids, asks, 60000.0, 1, 0, 0)
+    # Execution Engine Warmup Pass
+    update_limit_order_book_core(bids, asks, 60000.0, 1, 0, 0)
     bids.fill(0)
     asks.fill(0)
 
@@ -118,7 +138,7 @@ def main():
 
     header_panel = Panel(
         "[bold cyan]PROJECT AETHER-X: PRODUCTION LIVE TRADING ENGINE[/bold cyan]\n"
-        "[dim]Coinbase WS Stream | Zero-Alloc Arena | Numba LOB | Polars Alpha | Execution Engine[/dim]",
+        f"[dim]Coinbase WS Stream | Zero-Alloc Arena | {ENGINE_NAME} | Polars Alpha | Execution Engine[/dim]",
         style="bold white on blue"
     )
     layout["header"].update(header_panel)
@@ -139,7 +159,7 @@ def main():
                         tick = buffer[tick_idx]
                         
                         t0 = time.perf_counter_ns()
-                        update_limit_order_book(
+                        update_limit_order_book_core(
                             bids, asks, 
                             tick['price'], tick['quantity'], 
                             tick['side'], tick['action']
