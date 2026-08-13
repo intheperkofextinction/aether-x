@@ -10,7 +10,7 @@
 
 ---
 
-## ⚡ Key Systems Architecture
+##  Key Systems Architecture
 
 ```text
 [ Coinbase Live WS ] ──> Dedicated Socket Thread
@@ -36,18 +36,18 @@
 
 ---
 
-## 🚀 Benchmark Performance Summary
+##  Benchmark Performance Summary
 
 Benchmarked across **50,000 continuous limit order book mutations**:
 
 | Implementation Engine | Average Execution Latency | Performance Multiplier |
 | :--- | :--- | :--- |
 | **Numba LLVM JIT** | `3.7931 µs` | `1.00x` |
-| **Native C++20 Core (pybind11)** | **`1.8445 µs`** | **`2.06x Faster`** 🚀 |
+| **Native C++20 Core (pybind11)** | **`1.8445 µs`** | **`2.06x Faster`**  |
 
 ---
 
-## 🛠️ Module Breakdown
+##  Module Breakdown
 
 1. **`memory_arena.py`**: Pre-allocated C-struct NumPy ring buffer eliminating runtime Garbage Collection (GC) latency pauses.
 2. **`order_book_cpp.cpp`**: Ultra-low latency L3 Limit Order Book compiled via C++20 with `-O3 -march=native` CPU optimizations.
@@ -57,7 +57,7 @@ Benchmarked across **50,000 continuous limit order book mutations**:
 
 ---
 
-## 💻 Building & Running
+##  Building & Running
 
 ### Requirements
 * **GCC / g++** with C++17 or C++20 support
