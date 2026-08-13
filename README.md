@@ -53,7 +53,7 @@ Benchmarked across **50,000 continuous limit order book mutations**:
 2. **`order_book_cpp.cpp`**: Ultra-low latency L3 Limit Order Book compiled via C++20 with `-O3 -march=native` CPU optimizations.
 3. **`ws_ingestion.py`**: Multi-threaded WebSocket client streaming live level-2 market depth from Coinbase Pro.
 4. **`execution_engine.py`**: High-frequency matching engine with order priority queue modeling, slippage simulation, and PnL metrics.
-5. **`main.py`**: Production orchestrator rendering real-time terminal diagnostics, OFI signals, and hardware latency profile distributions.
+5. **`main.py`**: Production orchestrator featuring dynamic C++20 engine selection with Numba fallback, rendering real-time terminal diagnostics, OFI signals, and hardware latency profile distributions.
 
 ---
 
